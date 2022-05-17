@@ -1,7 +1,16 @@
 const express = require("express");
 require("../db/mongoose");
+const cors=require("cors");
+
 
 const router = express.Router();
+router.use(cors({
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204
+}
+));
 const Budget = require("../models/Budget");
 const auth = require("../middleware/auth");
 const {
@@ -9,9 +18,9 @@ const {
   updateBudget,
   getBudget,
 } = require("../controllers/Budget");
-router.get("/budget/get", auth, getBudget);
-router.post("/budget/create", auth, postBudget);
+router.get("/budget/get",cors(), auth, getBudget);
+router.post("/budget/create", cors(),auth, postBudget);
 
-router.patch("/budget/update/:id", auth, updateBudget);
+router.patch("/budget/update/:id",cors(), auth, updateBudget);
 
 module.exports = router;
