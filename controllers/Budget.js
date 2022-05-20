@@ -40,7 +40,7 @@ const updateBudget = async (req, res) => {
     //  let {amount,amountType}=budget
     const amount=req.body.amount
     const amountType=req.body.amountType
-     console.log(amountType)
+     
     if(amountType=="earning"){
       budget.total+=amount;
       budget.earning+=amount

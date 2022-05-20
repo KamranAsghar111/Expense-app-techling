@@ -20,7 +20,6 @@ const {
 } = require("../controllers/Budget");
 router.get("/budget/get",cors(), auth, getBudget);
 router.post("/budget/create", cors(),auth, postBudget);
-
 router.patch("/budget/update/:id",cors(), auth, updateBudget);
 
 module.exports = router;
