@@ -13,6 +13,11 @@ const postBudget = async (req, res) => {
   budget.earning=amount
   budget.total=budget.earning
   
+  const earningObj={
+    name:req.body.name,
+    earning:req.body.amount
+  }
+  budget.earningDetail.push(earningObj)
   const savebudget = await budget.save();
   res.send({savebudget}); 
 } catch (error) {
@@ -23,33 +28,55 @@ const postBudget = async (req, res) => {
 
 
 const getBudget = async (req, res) => {
-    const owner = req.user._id;
+    // const owner = req.user._id;
+    const _id = req.params.id;
     try {
-      const budget = await Budget.findOne({ owner });
+      const budget = await Budget.findOne({_id});
       res.send(budget)
     } catch (error) {
       res.status(401).send();
     }
   }
 
+  // const getAllBudget = async (req, res) => {
+    
+  //   try {
+  //     const budget = await Budget.find({});
+  //     res.send(budget)
+  //   } catch (error) {
+  //     res.status(401).send();
+  //   }
+  // }
 
 const updateBudget = async (req, res) => {
   try {
     const _id = req.params.id;
-    const budget = await Budget.findByIdAndUpdate(_id, req.body);
+    const budget = await Budget.findByIdAndUpdate(_id, req.body.amount);
     //  let {amount,amountType}=budget
     const amount=req.body.amount
     const amountType=req.body.amountType
      
     if(amountType=="earning"){
+      budget.amount=amount;
       budget.total+=amount;
       budget.earning+=amount
+      const earningObject={
+        name:req.body.name,
+        earning:req.body.amount
+      }
+      budget.earningDetail.push(earningObject)
     } 
    
      if (amountType=="expense") {
-      if(budget.total>0){    
+      if(budget.total > amount){    
       budget.total-=amount;
+      budget.amount=amount;
       budget.expense+=amount
+      const expenseObject={
+        name:req.body.name,
+        expense:req.body.amount
+      }
+      budget.expenseDetail.push(expenseObject)
     }else{
       res.send("balance low")
     }
@@ -63,4 +90,4 @@ const updateBudget = async (req, res) => {
   }
 };
 
-module.exports = { postBudget, updateBudget,getBudget };
+module.exports = { postBudget, updateBudget,getBudget};

@@ -21,5 +21,5 @@ app.use(user);
 app.use(login);
 app.use(budget)
 app.listen(port,() => {
-    console.log(`Application is running on ${port}`);
+   console.log(`Application is running on ${port}`);
 });

@@ -17,8 +17,10 @@ const {
   postBudget,
   updateBudget,
   getBudget,
+  getAllBudget
 } = require("../controllers/Budget");
-router.get("/budget/get",cors(), auth, getBudget);
+router.get("/budget/get/:id",cors(), auth, getBudget);
+// router.get("/budget/get",cors(), auth, getAllBudget);
 router.post("/budget/create", cors(),auth, postBudget);
 router.patch("/budget/update/:id",cors(), auth, updateBudget);
 
