@@ -1,5 +1,6 @@
 const express = require("express");
 const cors=require("cors");
+
 require("./db/mongoose");
 const app = express();
 
@@ -8,7 +9,8 @@ const user = require("./routes/User");
 const login = require("./routes/Login");
 const budget = require("./routes/Budget");
 app.use(express.json());
- 
+console.log(`app:${app.get('env')}`);
+
  app.use(cors({
     "origin": "*",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",

@@ -38,21 +38,12 @@ const getBudget = async (req, res) => {
     }
   }
 
-  // const getAllBudget = async (req, res) => {
-    
-  //   try {
-  //     const budget = await Budget.find({});
-  //     res.send(budget)
-  //   } catch (error) {
-  //     res.status(401).send();
-  //   }
-  // }
-
+  
 const updateBudget = async (req, res) => {
   try {
     const _id = req.params.id;
     const budget = await Budget.findByIdAndUpdate(_id, req.body.amount);
-    //  let {amount,amountType}=budget
+    
     const amount=req.body.amount
     const amountType=req.body.amountType
      
@@ -68,7 +59,7 @@ const updateBudget = async (req, res) => {
     } 
    
      if (amountType=="expense") {
-      if(budget.total > amount){    
+      if(budget.total >= amount){    
       budget.total-=amount;
       budget.amount=amount;
       budget.expense+=amount
