@@ -17,10 +17,10 @@ const {
   postBudget,
   updateBudget,
   getBudget,
-  getAllBudget
+  getBudgetDetail
 } = require("../controllers/Budget");
 router.get("/budget/get/:id",cors(), auth, getBudget);
-// router.get("/budget/get",cors(), auth, getAllBudget);
+//router.get("/budget/get/:id/earning",cors(), auth, getBudgetDetail);
 router.post("/budget/create", cors(),auth, postBudget);
 router.patch("/budget/update/:id",cors(), auth, updateBudget);
 

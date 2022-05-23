@@ -9,7 +9,7 @@ const user = require("./routes/User");
 const login = require("./routes/Login");
 const budget = require("./routes/Budget");
 app.use(express.json());
-console.log(`app:${app.get('env')}`);
+
 
  app.use(cors({
     "origin": "*",
