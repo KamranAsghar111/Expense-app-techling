@@ -81,13 +81,13 @@ const updateBudget = async (req, res) => {
     bud.name=req.body.name
     if(req.body.amountType == "earning"){
       bud.amount=req.body.amount;
-      bud.earning+=req.body.amount
-      bud.total+=req.body.amount
+      bud.earning=req.body.amount
+      bud.total=req.body.amount
     }
     else if(req.body.amountType == "expense"){
        bud.amount=req.body.amount;
-       bud.expense+=req.body.amount
-       bud.total-= req.body.amount
+       bud.expense=req.body.amount
+       bud.total= req.body.amount
     }
     else{
       res.send("Please Select Type");
