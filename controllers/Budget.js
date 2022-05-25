@@ -33,11 +33,32 @@ const getBudget = async (req, res) => {
   
   try {
     const budget = await Budget.find();
-    const response=  budget.filter(b=>_id== b.User.toString())
-    res.send(response)
+    const UserBudget=  budget.filter(b=>_id== b.User.toString())
    
+    let TotalBudget =0
+    
+    for (let index = 0; index < UserBudget.length; index++) {
+      TotalBudget  += UserBudget[index].total;
+      
+    }
+   let TotalEarnings = 0
+
+   for (let index = 0; index < UserBudget.length; index++) {
+      TotalEarnings += UserBudget[index].earning;
+     
+   }
+   let TotalExpense= 0
+   for (let index = 0; index < UserBudget.length; index++) {
+      TotalExpense += UserBudget[index].expense;
+     }
+    console.log(TotalExpense);
+    
+     res.send({TotalBudget,TotalEarnings,TotalExpense,UserBudget});
+    
+   
+    
   } catch (error) {
-    res.status(401).send(error);
+    res.status(400).send(error);
   }
 };
 const updateBudget = async (req, res) => {
