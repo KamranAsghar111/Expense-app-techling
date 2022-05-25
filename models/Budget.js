@@ -20,17 +20,20 @@ const budgetSchema = new mongoose.Schema({
   amountType:{
     type:String,
   },
-  earningDetail: 
-  [ 
-    {name: String, 
-     earning: Number}
-  ],
+  name:{
+    type:String
+  },
+  // earningDetail: 
+  // [ 
+  //   {name: String, 
+  //    earning: Number}
+  // ],
 
-  expenseDetail: 
-  [ 
-    {name: String, 
-     expense: Number}
-  ],
+  // expenseDetail: 
+  // [ 
+  //   {name: String, 
+  //    expense: Number}
+  // ],
    User:{
     type:mongoose.Schema.Types.ObjectId,
     required:true,

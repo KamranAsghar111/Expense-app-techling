@@ -8,7 +8,7 @@ const postUser = async (req, res) => {
     await user.generateAuthToken();
     const createStudent = await user.save();
 
-
+    
     res.send({ createStudent});
   } catch (error) {
     res.status(400).send(error);
