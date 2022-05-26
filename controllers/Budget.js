@@ -23,7 +23,7 @@ const postBudget = async (req, res) => {
     const savebudget = await budget.save();
     res.send({ savebudget });
   } catch (error) {
-    res.status(401).send(error);
+    res.status(400).send("bad data");
   }
 };
 
