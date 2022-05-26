@@ -1,6 +1,5 @@
 require("../db/mongoose");
 const User = require("../models/User");
-
 const postUser = async (req, res) => {
   try {
     
