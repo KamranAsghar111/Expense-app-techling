@@ -118,7 +118,7 @@ const deleteBudget = async (req, res) =>{
     }
     const bud = await Budget.findByIdAndDelete(response1[0]._id);
    
-   console.log(bud);
+  
     
     res.send(bud)
   
