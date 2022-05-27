@@ -11,19 +11,19 @@ const postBudget = async (req, res) => {
        budget.expense=0;
       budget.total=req.body.amount
     }
-    else if(req.body.amountType == "expense"){
+     if(req.body.amountType == "expense"){
        budget.expense = req.body.amount;
        budget.earning=0
        budget.total=0 - req.body.amount
     }
-    else{
-      res.send("Please Select Type");
-    }
+    // else{
+    //   res.send("Please Select Type");
+    // }
     
     const savebudget = await budget.save();
     res.send({ savebudget });
   } catch (error) {
-    res.status(400).send("bad data");
+    res.status(400).send(error);
   }
 };
 
