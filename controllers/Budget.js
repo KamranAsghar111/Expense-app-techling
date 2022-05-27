@@ -70,20 +70,26 @@ const updateBudget = async (req, res) => {
     const bud = await Budget.findByIdAndUpdate(response1[0]._id);
 
     bud.name = req.body.name;
+    if (req.body.amountType == "earning" || req.body.amountType == "expense") {
     if (req.body.amountType == "earning") {
       bud.amount = req.body.amount;
       bud.earning = req.body.amount;
+      bud.expense=0
       bud.total = req.body.amount;
-    } else if (req.body.amountType == "expense") {
+    } 
+     if (req.body.amountType == "expense") {
       bud.amount = req.body.amount;
       bud.expense = req.body.amount;
+      bud.earning=0
       bud.total = req.body.amount;
-    } else {
+    } 
+
+    const savebudget = await bud.save();
+    res.send({ savebudget });}
+    else {
       res.send("Please Select Type");
     }
 
-    const savebudget = await bud.save();
-    res.send({ savebudget });
   } catch (error) {
     res.status(401);
   }
