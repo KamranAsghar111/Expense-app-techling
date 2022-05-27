@@ -1,29 +1,49 @@
 const Budget = require("../models/Budget");
 const postBudget = async (req, res) => {
+  const _id = req.user._id.toString();
   try {
     const budget = Budget({
       ...req.body,
       User: req.user._id,
     });
-    if (req.body.amountType == "earning" || req.body.amountType == "expense") {
-      if (req.body.amountType == "earning") {
-        budget.earning = req.body.amount;
-        budget.expense = 0;
-        budget.total = req.body.amount;
-      }
-      if (req.body.amountType == "expense") {
-        budget.expense = req.body.amount;
-        budget.earning = 0;
-        budget.total = 0 - req.body.amount;
-      }
-     
-
-      const savebudget = await budget.save();
-      res.send({ savebudget });
-    } else {
-      res.send("Please Select Type");
+    const bud = await Budget.find();
+    console.log(bud +"hello");
+    const UserBudget = bud.filter((b) => _id == b.User.toString());
+    console.log(UserBudget +"userbudget");
+    let TotalBudget = 0;
+   
+    for (let index = 0; index < UserBudget.length; index++) {
+      TotalBudget += UserBudget[index].total;
     }
-  } catch (error) {
+    
+    if (req.body.amountType == "earning" || req.body.amountType == "expense") {
+    
+      if (req.body.amountType == "expense" && TotalBudget<req.body.amount) {
+        res.send("low balance")
+      }else{
+        if (req.body.amountType == "earning") {
+          budget.earning = req.body.amount;
+          budget.expense = 0;
+          budget.total = req.body.amount;
+        }
+         if (req.body.amountType == "expense") {
+          
+          budget.expense = req.body.amount;
+          budget.earning = 0;
+          budget.total = 0 - req.body.amount;
+        }
+       
+  
+        const savebudget = await budget.save();
+        res.send({  savebudget });
+    
+    }
+      }else {
+        res.send("Please Select Type");
+      }
+    }
+   
+   catch (error) {
     res.status(400).send(error);
   }
 };
