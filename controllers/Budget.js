@@ -5,7 +5,8 @@ const postBudget = async (req, res) => {
       ...req.body,
       User: req.user._id,
     });
-  
+    if(req.body.amountType == "earning" && req.body.amountType == "expense")
+  {
     if(req.body.amountType == "earning"){
       budget.earning = req.body.amount;
        budget.expense=0;
@@ -22,6 +23,7 @@ const postBudget = async (req, res) => {
     
     const savebudget = await budget.save();
     res.send({ savebudget });
+  }
   } catch (error) {
     res.status(400).send(error);
   }
