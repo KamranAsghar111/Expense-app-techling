@@ -103,6 +103,7 @@ const updateBudget = async (req, res) => {
       bud.earning=0
       bud.total = req.body.amount;
     } 
+    bud.amountType= req.body.amountType
 
     const savebudget = await bud.save();
     res.send({ savebudget });}
