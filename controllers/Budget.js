@@ -7,9 +7,9 @@ const postBudget = async (req, res) => {
       User: req.user._id,
     });
     const bud = await Budget.find();
-    console.log(bud +"hello");
+    
     const UserBudget = bud.filter((b) => _id == b.User.toString());
-    console.log(UserBudget +"userbudget");
+    
     let TotalBudget = 0;
    
     for (let index = 0; index < UserBudget.length; index++) {
@@ -83,12 +83,45 @@ const updateBudget = async (req, res) => {
     const budget = await Budget.find();
     const response = budget.filter((b) => uid == b.User.toString());
     const response1 = response.filter((r) => _id == r._id.toString());
+    const response2 = response.filter((r) => _id != r._id.toString());
 
-    if (response1.length == 0) {
+
+if (response1.length == 0) {
       res.send("404 Not Found");
+    }else{
+      let TotalBudget = 0;
+      if (req.body.amountType== "earning") {
+        const update = response1
+        update.amount=req.body.amount
+        update.name=req.body.name
+        update.amountType=req.body.amountType
+        update.total=req.body.amount
+      response2.push(update)
+   console.log(response2 +" response 2 fisrt if");
+      for (let index = 0; index < response2.length; index++) {
+        TotalBudget += response2[index].total;
+      }
+      console.log(TotalBudget +" total budget fisrt if");
     }
+    if (req.body.amountType== "expense") {
+      const update = response1
+      update.amount=req.body.amount 
+      update.name=req.body.name
+      update.amountType=req.body.amountType
+      update.total=req.body.amount * (-1)
+    response2.push(update)
+    console.log(response2 +" response 2 second if");
+    for (let index = 0; index < response2.length; index++) {
+      TotalBudget += response2[index].total;
+    }
+    console.log(TotalBudget +" total budget second if");
+  }
+  if (TotalBudget<0) {
+    res.send("Balance low")
+  } 
+  else{
     const bud = await Budget.findByIdAndUpdate(response1[0]._id);
-
+    
     bud.name = req.body.name;
     if (req.body.amountType == "earning" || req.body.amountType == "expense") {
     if (req.body.amountType == "earning") {
@@ -99,10 +132,11 @@ const updateBudget = async (req, res) => {
     } 
      if (req.body.amountType == "expense") {
       bud.amount = req.body.amount;
-      bud.expense = req.body.amount;
+      bud.expense = req.body.amount ;
       bud.earning=0
-      bud.total = req.body.amount;
-    } 
+      bud.total = req.body.amount * (-1);
+    }  
+
     bud.amountType= req.body.amountType
 
     const savebudget = await bud.save();
@@ -111,25 +145,45 @@ const updateBudget = async (req, res) => {
       res.send("Please Select Type");
     }
 
-  } catch (error) {
+  }
+   
+
+  }} catch (error) {
     res.status(401);
   }
 };
 
 const deleteBudget = async (req, res) => {
+ 
   try {
+    
     const uid = req.user._id.toString();
     const _id = req.params.id;
     const budget = await Budget.find();
     const response = budget.filter((b) => uid == b.User.toString());
-    const response1 = response.filter((r) => _id == r._id.toString());
-
-    if (response1.length == 0) {
-      res.send("404 Not Found");
+   
+    const response2=response.filter((b) =>_id!=b._id.toString())
+    let TotalBudget = 0;
+   
+    for (let index = 0; index < response2.length; index++) {
+      TotalBudget += response2[index].total;
     }
-    const bud = await Budget.findByIdAndDelete(response1[0]._id);
 
-    res.send(bud);
+    if(TotalBudget<0){
+      res.send("Low Budget");
+      
+}else{
+  const response1 = response.filter((r) => _id == r._id.toString());
+  
+      if (response1.length == 0) {
+        res.send("404 Not Found");
+      }
+      const bud = await Budget.findByIdAndDelete(response1[0]._id);
+  
+      res.send(bud);
+}
+  
+    
   } catch (error) {
     res.status(401);
   }
